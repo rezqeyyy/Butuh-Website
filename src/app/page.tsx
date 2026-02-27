@@ -1,127 +1,135 @@
 "use client";
 
-import { useState } from "react";
-import { supabase } from "../lib/supabase"; // Pastikan path ini sesuai dengan letak folder lib-mu
-import { Send, CheckCircle2, Code2, MonitorSmartphone } from "lucide-react";
+import { useEffect, useState } from "react";
+import { supabase } from "@/lib/supabase"; // Menggunakan alias @ agar clean
+import { Search, Code2, ChevronRight, LayoutDashboard, LogIn, Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
-export default function Home() {
-  const [formData, setFormData] = useState({ name: "", email: "", description: "" });
-  const [isLoading, setIsLoading] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
+// --- Komponen Kecil untuk Kerapihan ---
+const MerchantCard = ({ merchant, onClick }: { merchant: any; onClick: () => void }) => (
+  <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full group">
+    <div className="flex items-center gap-4 mb-4">
+      <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-700 text-white rounded-2xl flex items-center justify-center font-bold text-2xl shadow-inner uppercase">
+        {merchant.profiles?.full_name?.charAt(0) || "D"}
+      </div>
+      <div>
+        <h3 className="font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
+          {merchant.profiles?.full_name}
+        </h3>
+        <p className="text-sm text-gray-500 flex items-center gap-1">
+          <Code2 className="w-3.5 h-3.5" /> {merchant.experience_years} Tahun Pengalaman
+        </p>
+      </div>
+    </div>
+    <p className="text-gray-600 text-sm mb-6 line-clamp-3 flex-1 italic">
+      "{merchant.short_description || "Siap membantu mewujudkan website impian Anda."}"
+    </p>
+    <div className="border-t pt-4 flex items-center justify-between">
+      <div>
+        <p className="text-[10px] text-gray-400 uppercase tracking-wider font-bold">Harga Mulai</p>
+        <p className="font-extrabold text-blue-600 text-lg">
+          Rp {merchant.start_price?.toLocaleString("id-ID")}
+        </p>
+      </div>
+      <button 
+        onClick={onClick}
+        className="bg-gray-900 text-white p-2 rounded-xl hover:bg-blue-600 transition-all shadow-md active:scale-95"
+      >
+        <ChevronRight className="w-5 h-5" />
+      </button>
+    </div>
+  </div>
+);
 
-  // Fungsi untuk menangani pengiriman form
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault(); // Mencegah reload halaman
-    setIsLoading(true);
+export default function MarketplaceHome() {
+  const router = useRouter();
+  const [merchants, setMerchants] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState<any>(null);
 
-    // Mengirim data ke tabel 'orders' di Supabase
-    const { error } = await supabase.from("orders").insert([
-      {
-        name: formData.name,
-        email: formData.email,
-        description: formData.description,
-      },
-    ]);
+  useEffect(() => {
+    checkUser();
+    fetchMerchants();
+  }, []);
 
-    if (error) {
-      alert("Gagal mengirim pesanan: " + error.message);
-    } else {
-      setIsSuccess(true);
-      setFormData({ name: "", email: "", description: "" }); // Reset form
-      setTimeout(() => setIsSuccess(false), 5000); // Sembunyikan pesan sukses setelah 5 detik
-    }
-    
-    setIsLoading(false);
+  const checkUser = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    setUser(user);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const fetchMerchants = async () => {
+    try {
+      // Query dengan join ke tabel profiles
+      const { data, error } = await supabase
+        .from("merchants")
+        .select(`*, profiles ( full_name, role )`);
+
+      if (error) {
+        // Tampilkan error lebih detail di console agar tidak muncul {} kosong
+        console.error("Supabase Error:", error.message, "| Hint:", error.hint);
+      } else {
+        setMerchants(data || []);
+      }
+    } catch (err) {
+      console.error("Gagal fetch data:", err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-6">
-      <div className="max-w-4xl w-full grid md:grid-cols-2 gap-12 items-center">
+    <div className="min-h-screen bg-gray-50">
+      {/* 1. Header & Hero Section */}
+      <section className="bg-blue-600 text-white py-16 px-6 text-center">
+        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
+          Cari Developer Website Terbaik
+        </h1>
+        <p className="text-blue-100 text-lg max-w-2xl mx-auto mb-8 font-medium">
+          Temukan developer berpengalaman untuk membangun landing page, e-commerce, hingga sistem kustom.
+        </p>
         
-        {/* Bagian Teks & Info */}
-        <div className="space-y-6">
-          <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight">
-            Wujudkan Website Impianmu Sekarang.
-          </h1>
-          <p className="text-lg text-gray-600">
-            Platform pembuatan website profesional. Dari landing page hingga sistem kompleks, kami siap membantu membangun presensi digitalmu.
-          </p>
-          <div className="space-y-4 pt-4">
-            <div className="flex items-center gap-3 text-gray-700">
-              <Code2 className="text-blue-600" />
-              <span className="font-medium">Clean Code & High Performance</span>
-            </div>
-            <div className="flex items-center gap-3 text-gray-700">
-              <MonitorSmartphone className="text-blue-600" />
-              <span className="font-medium">Responsive di Semua Perangkat</span>
-            </div>
+        <div className="max-w-xl mx-auto flex bg-white rounded-full overflow-hidden shadow-lg p-1">
+          <div className="pl-4 flex items-center text-gray-400">
+            <Search className="w-5 h-5" />
           </div>
+          <input
+            type="text"
+            placeholder="Cari keahlian (React, Golang, Flutter)..."
+            className="w-full px-4 py-3 text-gray-700 outline-none"
+          />
+          <button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-2 rounded-full font-bold transition-all">
+            Cari
+          </button>
         </div>
+      </section>
 
-        {/* Bagian Form Pesanan */}
-        <div className="bg-white p-8 rounded-2xl shadow-xl border border-gray-100">
-          <h2 className="text-2xl font-bold text-gray-800 mb-6">Mulai Pesan Website</h2>
-          
-          {isSuccess ? (
-            <div className="bg-green-50 text-green-700 p-4 rounded-lg flex items-center gap-3 mb-6">
-              <CheckCircle2 className="w-6 h-6" />
-              <p className="font-medium">Pesanan berhasil dikirim! Kami akan segera menghubungi Anda.</p>
-            </div>
-          ) : null}
+      {/* 2. Daftar Developer Section */}
+      <section className="max-w-6xl mx-auto px-6 py-12">
+        <h2 className="text-2xl font-bold text-gray-900 mb-8 flex items-center gap-2">
+          <ChevronRight className="text-blue-600" /> Developer Tersedia
+        </h2>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
-              <input
-                type="text"
-                name="name"
-                required
-                value={formData.name}
-                onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
-                placeholder="John Doe"
+        {isLoading ? (
+          <div className="flex flex-col items-center justify-center py-20 text-gray-400">
+            <Loader2 className="w-10 h-10 animate-spin mb-2" />
+            <p>Memuat daftar developer...</p>
+          </div>
+        ) : merchants.length === 0 ? (
+          <div className="text-center py-24 bg-white rounded-3xl border-2 border-dashed border-gray-200 shadow-inner">
+            <p className="text-gray-500 font-medium">Belum ada developer yang terdaftar di area ini.</p>
+          </div>
+        ) : (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {merchants.map((merchant) => (
+              <MerchantCard 
+                key={merchant.id} 
+                merchant={merchant} 
+                onClick={() => router.push(`/merchant/${merchant.id}`)} 
               />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-              <input
-                type="email"
-                name="email"
-                required
-                value={formData.email}
-                onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
-                placeholder="john@example.com"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Deskripsi Kebutuhan Website</label>
-              <textarea
-                name="description"
-                required
-                rows={4}
-                value={formData.description}
-                onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all resize-none"
-                placeholder="Saya butuh website toko online dengan fitur..."
-              />
-            </div>
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-70"
-            >
-              {isLoading ? "Mengirim..." : "Kirim Pesanan"}
-              {!isLoading && <Send className="w-4 h-4" />}
-            </button>
-          </form>
-        </div>
-
-      </div>
+            ))}
+          </div>
+        )}
+      </section>
     </div>
   );
 }
