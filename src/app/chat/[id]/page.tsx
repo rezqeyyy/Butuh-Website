@@ -29,7 +29,7 @@ export default function ChatRoomPage() {
             <ArrowLeft size={20} />
           </button>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-500 text-white flex items-center justify-center font-bold text-lg">
+            <div className="w-10 h-10 rounded-full bg-linear-to-tr from-blue-600 to-indigo-500 text-white flex items-center justify-center font-bold text-lg">
               {/* Tampilkan huruf depan namanya di Avatar */}
               {roomName.charAt(0).toUpperCase()}
             </div>
@@ -56,7 +56,7 @@ export default function ChatRoomPage() {
                   ? "bg-blue-600 text-white rounded-tr-sm" 
                   : "bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 text-gray-900 dark:text-white rounded-tl-sm"
               }`}>
-                <p className="text-[15px] leading-relaxed break-words">{msg.message}</p>
+                <p className="text-[15px] leading-relaxed wrap-break-word">{msg.message}</p>
                 <p className={`text-[10px] mt-1.5 text-right font-medium ${isMe ? "text-blue-200" : "text-gray-400 dark:text-gray-500"}`}>
                   {new Date(msg.created_at).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}
                 </p>
