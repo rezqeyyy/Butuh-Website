@@ -15,7 +15,7 @@ const DUMMY_WEBSITES = [
 // --- Komponen Kartu Khusus Jualan Website ---
 const WebsiteCard = ({ website }: { website: any }) => (
   <div className="bg-white dark:bg-[#111111] rounded-3xl overflow-hidden border border-gray-100 dark:border-zinc-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full group cursor-pointer">
-    <div className={`h-40 w-full bg-gradient-to-br ${website.color} relative p-5 flex flex-col justify-end overflow-hidden`}>
+    <div className={`h-40 w-full bg-linear-to-br ${website.color} relative p-5 flex flex-col justify-end overflow-hidden`}>
       <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-white text-xs font-bold border border-white/30">
         {website.type}
       </div>
@@ -49,7 +49,7 @@ const WebsiteCard = ({ website }: { website: any }) => (
 const MerchantCard = ({ merchant }: { merchant: any }) => (
   <div className="bg-white dark:bg-[#111111] rounded-3xl p-6 border border-gray-100 dark:border-zinc-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full group cursor-pointer">
     <div className="flex items-center gap-4 mb-4">
-      <div className="w-14 h-14 bg-gradient-to-br from-[#1a56db] to-indigo-500 text-white rounded-2xl flex items-center justify-center font-bold text-2xl shadow-inner uppercase overflow-hidden shrink-0">
+      <div className="w-14 h-14 bg-linear-to-br from-[#1a56db] to-indigo-500 text-white rounded-2xl flex items-center justify-center font-bold text-2xl shadow-inner uppercase overflow-hidden shrink-0">
         {merchant.profiles?.avatar_url ? (
           <img src={merchant.profiles.avatar_url} alt="Avatar" className="w-full h-full object-cover" />
         ) : (
@@ -125,7 +125,7 @@ export default function MarketplaceHome() {
               </h2>
               <p className="text-gray-500 dark:text-gray-400 mt-2">Beli desain jadi, langsung online hari ini juga.</p>
             </div>
-            <button className="hidden md:flex text-[#1a56db] dark:text-blue-400 font-bold hover:underline items-center text-sm">
+            <button className="hidden md:flex text-[#1a56db] dark:text-blue-400 font-bold hover:underline items-center text-sm cursor-pointer">
               Lihat Semua
             </button>
           </div>

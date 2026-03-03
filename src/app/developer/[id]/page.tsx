@@ -49,7 +49,7 @@ export default function DeveloperDetailPage() {
           <div className="absolute -top-24 -right-24 w-64 h-64 bg-blue-500/10 blur-3xl rounded-full"></div>
 
           <div className="shrink-0 relative">
-            <div className="w-32 h-32 rounded-2xl bg-gradient-to-tr from-[#1a56db] to-indigo-500 p-1">
+            <div className="w-32 h-32 rounded-2xl bg-linear-to-tr from-[#1a56db] to-indigo-500 p-1">
               <div className="w-full h-full bg-white dark:bg-zinc-900 rounded-xl overflow-hidden flex items-center justify-center">
                 {developer.avatar_url ? (
                   <img src={developer.avatar_url} alt={developer.full_name} className="w-full h-full object-cover" />

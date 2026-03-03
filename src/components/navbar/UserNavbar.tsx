@@ -34,7 +34,7 @@ export default function UserNavbar() {
           {user ? (
             <div className="relative" ref={dropdownRef}>
               <button onClick={() => setIsDropdownOpen(!isDropdownOpen)} className="flex items-center gap-2 p-1 pr-3 rounded-full border border-gray-200 dark:border-zinc-800 hover:bg-gray-50 dark:hover:bg-zinc-900 transition-all bg-white dark:bg-[#0a0a0a]">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#1a56db] to-indigo-500 flex items-center justify-center text-white font-bold text-sm shadow-inner overflow-hidden">
+                <div className="w-8 h-8 rounded-full bg-linear-to-tr from-[#1a56db] to-indigo-500 flex items-center justify-center text-white font-bold text-sm shadow-inner overflow-hidden">
                   {profile?.avatar_url ? (
                     <img src={profile.avatar_url} alt="Profile" className="w-full h-full object-cover" />
                   ) : (
