@@ -49,7 +49,7 @@ export default function UserOrdersPage() {
               <div key={order.id} className="bg-white dark:bg-[#111111] p-6 rounded-3xl border border-slate-100 dark:border-gray-800 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-none hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] dark:hover:border-gray-700 transition-all group flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                 
                 <div className="flex gap-5 items-center w-full md:w-auto">
-                  <div className="p-4 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-500/10 dark:to-indigo-500/10 rounded-2xl text-blue-600 dark:text-blue-400 group-hover:scale-110 transition-transform">
+                  <div className="p-4 bg-linear-to-br from-blue-50 to-indigo-50 dark:from-blue-500/10 dark:to-indigo-500/10 rounded-2xl text-blue-600 dark:text-blue-400 group-hover:scale-110 transition-transform">
                     <Package size={28} />
                   </div>
                   <div>

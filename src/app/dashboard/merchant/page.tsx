@@ -24,7 +24,7 @@ export default function MerchantDashboardPage() {
         {/* Header Section */}
         <div className="bg-white dark:bg-[#111111] p-6 md:p-8 rounded-3xl border border-zinc-200 dark:border-zinc-800 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6 transition-colors">
           <div className="flex items-center gap-5">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-[#1a56db] to-indigo-500 overflow-hidden shrink-0 border-2 border-white dark:border-zinc-800 shadow-lg">
+            <div className="w-16 h-16 rounded-2xl bg-linear-to-tr from-[#1a56db] to-indigo-500 overflow-hidden shrink-0 border-2 border-white dark:border-zinc-800 shadow-lg">
               {profile?.avatar_url ? (
                 <img src={profile.avatar_url} alt="Avatar" className="w-full h-full object-cover" />
               ) : (
@@ -84,7 +84,7 @@ export default function MerchantDashboardPage() {
 
         {/* Quick Actions */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
-          <Link href="/orders/merchant" className="group bg-gradient-to-br from-[#1a56db] to-indigo-600 p-8 rounded-3xl shadow-lg shadow-blue-500/20 text-white relative overflow-hidden flex justify-between items-center transition-transform hover:scale-[1.02]">
+          <Link href="/orders/merchant" className="group bg-linear-to-br from-[#1a56db] to-indigo-600 p-8 rounded-3xl shadow-lg shadow-blue-500/20 text-white relative overflow-hidden flex justify-between items-center transition-transform hover:scale-[1.02]">
             <div className="relative z-10">
               <h3 className="text-xl font-extrabold mb-2">Kelola Pesanan</h3>
               <p className="text-blue-100 font-medium">Cek kotak masuk klienmu.</p>

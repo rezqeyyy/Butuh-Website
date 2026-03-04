@@ -4,18 +4,14 @@ import { Search, Code2, ChevronRight, Loader2, Monitor, LayoutTemplate, Shopping
 import Link from "next/link";
 // Import logika dari folder hooks
 import { useMarketplace } from "@/hooks/home/useMarketplace";
-
-// --- DUMMY DATA UNTUK JUALAN WEBSITE ---
-const DUMMY_WEBSITES = [
-  { id: 'w1', title: 'Website Company Profile', desc: 'Cocok untuk perusahaan korporat dengan desain elegan, SEO friendly, dan sangat responsif.', price: 1500000, type: 'Landing Page', color: 'from-indigo-500 to-purple-600' },
-  { id: 'w2', title: 'Toko Online / E-Commerce', desc: 'Sistem keranjang belanja lengkap, integrasi payment gateway lokal, dan dashboard admin.', price: 3500000, type: 'Full Web App', color: 'from-emerald-400 to-teal-600' },
-  { id: 'w3', title: 'Undangan Pernikahan Digital', desc: 'Desain romantis dengan fitur RSVP tamu, galeri pre-wedding, peta lokasi, dan musik latar.', price: 500000, type: 'Mini Web', color: 'from-rose-400 to-red-500' },
-];
+import { useRouter } from "next/navigation";
+import { useMoreWebsite } from "@/hooks/morewebsite/useMoreWebsite";
+import { useWebsite } from "@/hooks/website/useWebsite";
 
 // --- Komponen Kartu Khusus Jualan Website ---
 const WebsiteCard = ({ website }: { website: any }) => (
   <div className="bg-white dark:bg-[#111111] rounded-3xl overflow-hidden border border-gray-100 dark:border-zinc-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full group cursor-pointer">
-    <div className={`h-40 w-full bg-gradient-to-br ${website.color} relative p-5 flex flex-col justify-end overflow-hidden`}>
+    <div className={`h-40 w-full bg-linear-to-br ${website.color} relative p-5 flex flex-col justify-end overflow-hidden`}>
       <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-white text-xs font-bold border border-white/30">
         {website.type}
       </div>
@@ -49,7 +45,7 @@ const WebsiteCard = ({ website }: { website: any }) => (
 const MerchantCard = ({ merchant }: { merchant: any }) => (
   <div className="bg-white dark:bg-[#111111] rounded-3xl p-6 border border-gray-100 dark:border-zinc-800 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col h-full group cursor-pointer">
     <div className="flex items-center gap-4 mb-4">
-      <div className="w-14 h-14 bg-gradient-to-br from-[#1a56db] to-indigo-500 text-white rounded-2xl flex items-center justify-center font-bold text-2xl shadow-inner uppercase overflow-hidden shrink-0">
+      <div className="w-14 h-14 bg-linear-to-br from-[#1a56db] to-indigo-500 text-white rounded-2xl flex items-center justify-center font-bold text-2xl shadow-inner uppercase overflow-hidden shrink-0">
         {merchant.profiles?.avatar_url ? (
           <img src={merchant.profiles.avatar_url} alt="Avatar" className="w-full h-full object-cover" />
         ) : (
@@ -87,6 +83,8 @@ const MerchantCard = ({ merchant }: { merchant: any }) => (
 export default function MarketplaceHome() {
   // Panggil data dari custom hook
   const { merchants, isLoading } = useMarketplace();
+  const { website, loading } = useWebsite();
+  const router = useRouter();
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-[#0a0a0a] transition-colors duration-300">
@@ -125,14 +123,14 @@ export default function MarketplaceHome() {
               </h2>
               <p className="text-gray-500 dark:text-gray-400 mt-2">Beli desain jadi, langsung online hari ini juga.</p>
             </div>
-            <button className="hidden md:flex text-[#1a56db] dark:text-blue-400 font-bold hover:underline items-center text-sm">
+            <button onClick={() => router.push('/morewebsite')} className="hidden md:flex text-[#1a56db] dark:text-blue-400 font-bold hover:underline items-center text-sm cursor-pointer">
               Lihat Semua
             </button>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {DUMMY_WEBSITES.map((website) => (
-              <div key={website.id} onClick={() => alert("Fitur detail produk web segera hadir!")}>
+            {website.map((website: any) => (
+              <div key={website.id} onClick={() => router.push(`/morewebsite/${website.id}`)}>
                 <WebsiteCard website={website} />
               </div>
             ))}

@@ -55,7 +55,7 @@ export default function ChatInboxPage() {
                   key={chat.id}
                   className="w-full flex items-center gap-4 p-5 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors group cursor-pointer"
                 >
-                  <div className="w-14 h-14 shrink-0 rounded-full bg-gradient-to-br from-blue-600 to-indigo-500 text-white flex items-center justify-center font-bold text-xl shadow-inner">
+                  <div className="w-14 h-14 shrink-0 rounded-full bg-linear-to-br from-blue-600 to-indigo-500 text-white flex items-center justify-center font-bold text-xl shadow-inner">
                     {chat.interlocutor_name.charAt(0).toUpperCase()}
                   </div>
                   <div className="flex-1 min-w-0">
