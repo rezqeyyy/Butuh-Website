@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
-import { Loader2, Monitor } from "lucide-react";
+import { Loader2, Monitor, ShoppingCart } from "lucide-react";
 import { useDetailWebsiteRoom } from "@/hooks/user/morewebsite/useDetailWebsite";
 
 export default function WebsiteDetailPage() {
@@ -48,7 +48,7 @@ export default function WebsiteDetailPage() {
           <Monitor className="text-white/20 w-24 h-24 absolute -right-4 -bottom-4 transform -rotate-12" />
         </div>
       </div>
-      <div className="p-6 flex flex-col flex-1">
+      <div className="p-6 flex flex-col flex-1 gap-1">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
           {detailWebsite?.title}
         </h1>
@@ -63,6 +63,10 @@ export default function WebsiteDetailPage() {
         <p className="font-extrabold text-emerald-600 dark:text-emerald-400 text-lg">
           Price: Rp {detailWebsite?.price.toLocaleString("id-ID")}
         </p>
+        <div className="w-full flex justify-center items-center gap-4 bg-[#1a56db] hover:bg-blue-700 text-white p-2.5 rounded-xl transition-all shadow-md shadow-blue-500/20 active:scale-95 cursor-pointer">
+          <ShoppingCart className="w-5 h-5" />
+          <p className="ml-2 font-bold">Beli Sekarang</p>
+        </div>
       </div>
     </div>
   );
